@@ -1,7 +1,6 @@
-package com.github.jcgay.dynsuite.discover;
+package com.github.jcgay.dynsuite.example;
 
 import com.github.jcgay.dynsuite.annotation.IncludeClasses;
-import com.github.jcgay.dynsuite.fakeTestClasses.FailingTest;
 import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
 import com.github.jcgay.dynsuite.fakeTestClasses.SecondTest;
 import com.github.jcgay.dynsuite.runner.DynamicSuiteRunner;

@@ -1,4 +1,4 @@
-package com.github.jcgay.dynsuite.fakeTestClasses;
+package com.github.jcgay.dynsuite.example;
 
 import org.junit.Test;
 

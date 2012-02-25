@@ -1,4 +1,4 @@
-package com.github.jcgay.dynsuite.discover;
+package com.github.jcgay.dynsuite.example;
 
 import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
 import org.junit.runner.Description;
