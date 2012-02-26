@@ -31,3 +31,12 @@ task sourcesJar(type: Jar, dependsOn:classes) {
 artifacts {
     archives sourcesJar
 }
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            releaseOrSnapshot = version.contains('SNAPSHOT') ? 'snapshots' : 'releases'
+            repository(url: "file:///Users/jcgay/IdeaProjects/maven-repository/${releaseOrSnapshot}")
+        }
+    }
+}
