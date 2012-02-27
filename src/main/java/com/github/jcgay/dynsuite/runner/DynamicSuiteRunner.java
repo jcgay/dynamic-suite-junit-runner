@@ -90,7 +90,7 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
         } catch (IllegalAccessException e) {
             throw new TechnicalException(String.format("Can't access Method [%s] in class [%s].", method.getName(), testClass.getName()), e);
         } catch (InvocationTargetException e) {
-            throw new TechnicalException(String.format("Method [%s] in class [%s] has thrown an exception."), e);
+            throw new TechnicalException(String.format("Method [%s] in class [%s] has thrown an exception.", method.getName(), testClass.getName()), e);
         }
     }
 
