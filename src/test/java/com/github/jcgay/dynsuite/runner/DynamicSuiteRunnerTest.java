@@ -2,14 +2,19 @@ package com.github.jcgay.dynsuite.runner;
 
 import com.github.jcgay.dynsuite.annotation.IncludeClasses;
 import com.github.jcgay.dynsuite.exception.IllegalConfigurationException;
+import com.github.jcgay.dynsuite.fakeTestClasses.CustomRunner;
+import com.github.jcgay.dynsuite.fakeTestClasses.CustomTestUsingCustomRunner;
 import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
 import com.github.jcgay.dynsuite.fakeTestClasses.InvalidTest;
 import org.junit.Test;
+import org.junit.runner.Runner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.jcgay.dynsuite.matcher.IsRunnerCollectionContaining.hasRunnerForTest;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -44,6 +49,16 @@ public class DynamicSuiteRunnerTest {
         }
     }
 
+    public static class CustomRunnerMethod {
+
+        @IncludeClasses
+        public List<Class<?>> aMethodReturningTestWithCustomRunner() {
+            List<Class<?>> classes = new ArrayList<Class<?>>();
+            classes.add(CustomTestUsingCustomRunner.class);
+            return classes;
+        }
+    }
+
     @Test
     public void runner_initialization_should_find_one_class_to_run() throws Exception{
 
@@ -62,5 +77,14 @@ public class DynamicSuiteRunnerTest {
     public void an_invalid_test_class_should_be_reported_by_a_warning_message () throws Exception {
 
         new DynamicSuiteRunner(InvalidTestMethod.class);
+    }
+
+    @Test
+    public void a_discovered_test_class_should_use_its_custom_runner_instead_of_the_default_one() throws Exception {
+
+        List<Runner> runners = new DynamicSuiteRunner(CustomRunnerMethod.class).getChildren();
+
+        assertThat(runners, hasRunnerForTest(CustomTestUsingCustomRunner.class));
+        assertThat(runners.get(0), is(instanceOf(CustomRunner.class)));
     }
 }

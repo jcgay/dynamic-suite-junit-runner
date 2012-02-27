@@ -4,6 +4,7 @@ import com.github.jcgay.dynsuite.annotation.IncludeClasses;
 import com.github.jcgay.dynsuite.exception.IllegalConfigurationException;
 import com.github.jcgay.dynsuite.exception.TechnicalException;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -34,7 +35,7 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
         super(testClass);
         LOGGER.info("Running [{}] with dynamic suite runner.", testClass.getName());
         this.testClass = testClass;
-        this.runners = createRunnerFor(eachTestClassesToRun());
+        this.runners = createRunnerFor(eachTestClassToRun());
     }
     
     @Override
@@ -56,18 +57,39 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
         List<Runner> runners = new ArrayList<Runner>(testClasses.size());
         for (Class<?> aTestClass : testClasses) {
             try {
-                runners.add(new BlockJUnit4ClassRunner(aTestClass));
-                LOGGER.info("Create a runner for test class [{}].", aTestClass.getName());
+                Runner runner = defineRunner(aTestClass);
+                LOGGER.info("Creating runner [{}] for test class [{}].", runner.getClass().getName(), aTestClass.getName());
+                runners.add(runner);
             } catch (InitializationError e) {
                 LOGGER.warn("Class [{}] is not valid, ignoring it...", testClass.getName(), e);
             }
         }
         return runners;
     }
+    
+    private Runner defineRunner(Class<?> aTestClass) throws InitializationError{
 
-    private List<Class<?>> eachTestClassesToRun() {
+        RunWith annotation = aTestClass.getAnnotation(RunWith.class);
+        if (annotation != null) {
+            try {
+                return annotation.value().getConstructor(Class.class).newInstance(aTestClass);
+            } catch (NoSuchMethodException e) {
+                throw new TechnicalException(String.format("Cannot find constructor for runner [%s]", annotation.value().getName()), e);
+            } catch (InvocationTargetException e) {
+                throw new TechnicalException(String.format("Constructor for runner [%s] has thrown an exception.", annotation.value().getName()), e);
+            } catch (InstantiationException e) {
+                throw new TechnicalException(String.format("Class [%s] is abstract.", annotation.value().getName()), e);
+            } catch (IllegalAccessException e) {
+                throw new TechnicalException(String.format("Constructor for runner [%s] is not accessible.", annotation.value().getName()), e);
+            }
+        }
 
-        return runFor(suite(), methodAnnotatedWithIncludeClasses());
+        return new BlockJUnit4ClassRunner(aTestClass);
+    }
+
+    private List<Class<?>> eachTestClassToRun() {
+
+        return executeMethodOn(suite(), methodAnnotatedWithIncludeClasses());
     }
 
     private Method methodAnnotatedWithIncludeClasses() {
@@ -83,7 +105,7 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
         throw new IllegalConfigurationException("Can't find a method annotated with @IncludeClasses");
     }
 
-    private List<Class<?>> runFor(Object suite, Method method) {
+    private List<Class<?>> executeMethodOn(Object suite, Method method) {
 
         try {
             return (List<Class<?>>) method.invoke(suite);
