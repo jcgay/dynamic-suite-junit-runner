@@ -3,6 +3,7 @@ package com.github.jcgay.dynsuite.runner;
 import com.github.jcgay.dynsuite.annotation.IncludeClasses;
 import com.github.jcgay.dynsuite.exception.IllegalConfigurationException;
 import com.github.jcgay.dynsuite.exception.TechnicalException;
+import org.junit.Ignore;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
@@ -50,7 +51,11 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
 
     @Override
     protected void runChild(Runner child, RunNotifier notifier) {
-        child.run(notifier);
+        if (child.getDescription().getTestClass().isAnnotationPresent(Ignore.class)) {
+            notifier.fireTestIgnored(child.getDescription());
+        } else {
+            child.run(notifier);
+        }
     }
 
     private List<Runner> createRunnerFor(List<Class<?>> testClasses) {
