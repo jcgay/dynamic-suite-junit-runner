@@ -23,6 +23,12 @@ test {
     exclude 'com/github/jcgay/dynsuite/fakeTestClasses/**'
 }
 
+jar {
+    manifest {
+        attributes("Implementation-Title": rootProject.name, "Implementation-Version": version)
+    }
+}
+
 task sourcesJar(type: Jar, dependsOn:classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
