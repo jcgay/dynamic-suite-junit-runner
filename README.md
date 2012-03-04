@@ -3,12 +3,12 @@
 This is a runner to define tests suite at runtime.
 
 ## Usage
-***
+---
 
 #### Add dependency with your favorite build tool.
 
 Example with *Maven*:
-
+```xml
 	<project>
   		...
   		<repositories>
@@ -28,6 +28,7 @@ Example with *Maven*:
   		</dependencies>
   		...
 	</project>
+```
 
 #### Write a suite.
 
@@ -35,7 +36,7 @@ Example with *Maven*:
 - Write a method to find your tests (it should be public and returning a `java.util.List` of `java.lang.Class`) and annotate it with `com.github.jcgay.dynsuite.annotation.IncludeClasses`.
 
 Example:
-
+```java
 	@RunWith(DynamicSuiteRunner.class)
 	public class UnitTestSuite {
 
@@ -48,5 +49,6 @@ Example:
         	return classes;
     	}
 	}
+```
 
 #### Execute your suite.
