@@ -24,8 +24,7 @@ dependencies {
 }
 
 test {
-    exclude 'com/github/jcgay/dynsuite/example/**'
-    exclude 'com/github/jcgay/dynsuite/fakeTestClasses/**'
+    include '**/*Test.class'
 }
 
 jar {

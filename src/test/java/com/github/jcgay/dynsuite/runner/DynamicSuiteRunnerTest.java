@@ -2,10 +2,10 @@ package com.github.jcgay.dynsuite.runner;
 
 import com.github.jcgay.dynsuite.annotation.IncludeClasses;
 import com.github.jcgay.dynsuite.exception.IllegalConfigurationException;
-import com.github.jcgay.dynsuite.fakeTestClasses.CustomRunner;
-import com.github.jcgay.dynsuite.fakeTestClasses.CustomTestUsingCustomRunner;
-import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
-import com.github.jcgay.dynsuite.fakeTestClasses.InvalidTest;
+import com.github.jcgay.dynsuite.test.classes.CustomRunner;
+import com.github.jcgay.dynsuite.test.classes.CustomTestUsingCustomRunner;
+import com.github.jcgay.dynsuite.test.classes.FirstTestClass;
+import com.github.jcgay.dynsuite.test.classes.InvalidTestClass;
 import org.junit.Test;
 import org.junit.runner.Runner;
 
@@ -27,7 +27,7 @@ public class DynamicSuiteRunnerTest {
         @IncludeClasses
         public List<Class<?>> aMethodReturningTest() {
             List<Class<?>> classes = new ArrayList<Class<?>>();
-            classes.add(FirstTest.class);
+            classes.add(FirstTestClass.class);
             return classes;
         }
     }
@@ -38,13 +38,13 @@ public class DynamicSuiteRunnerTest {
             return null;
         }
     }
-    
+
     public static class InvalidTestMethod {
 
         @IncludeClasses
         public List<Class<?>> aMethodReturningInvalidTest()  {
             List<Class<?>> classes = new ArrayList<Class<?>>();
-            classes.add(InvalidTest.class);
+            classes.add(InvalidTestClass.class);
             return classes;
         }
     }
@@ -63,8 +63,8 @@ public class DynamicSuiteRunnerTest {
     public void runner_initialization_should_find_one_class_to_run() throws Exception{
 
         DynamicSuiteRunner runner = new DynamicSuiteRunner(AnnotatedMethod.class);
-        
-        assertThat(runner.getChildren(), hasRunnerForTest(FirstTest.class));
+
+        assertThat(runner.getChildren(), hasRunnerForTest(FirstTestClass.class));
     }
 
     @Test(expected = IllegalConfigurationException.class)

@@ -1,7 +1,7 @@
 package com.github.jcgay.dynsuite.matcher;
 
-import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
-import com.github.jcgay.dynsuite.fakeTestClasses.SecondTest;
+import com.github.jcgay.dynsuite.test.classes.FirstTestClass;
+import com.github.jcgay.dynsuite.test.classes.SecondTestClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Runner;
@@ -25,15 +25,15 @@ public class IsRunnerCollectionContainingTest {
 
     @Before
     public void initializeTest() throws Exception{
-        firstTestRunner = new BlockJUnit4ClassRunner(FirstTest.class);
-        secondTestRunner = new BlockJUnit4ClassRunner(SecondTest.class);
+        firstTestRunner = new BlockJUnit4ClassRunner(FirstTestClass.class);
+        secondTestRunner = new BlockJUnit4ClassRunner(SecondTestClass.class);
     }
     
     @Test
     public void should_not_fail_when_a_collection_is_containing_a_runner() throws Exception{
 
-        assertThat(Arrays.asList(firstTestRunner), hasRunnerForTest(FirstTest.class));
-        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), hasRunnerForTest(SecondTest.class));
+        assertThat(Arrays.asList(firstTestRunner), hasRunnerForTest(FirstTestClass.class));
+        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), hasRunnerForTest(SecondTestClass.class));
     }
 
     @Test(expected = NullPointerException.class)
@@ -73,7 +73,7 @@ public class IsRunnerCollectionContainingTest {
     @Test
     public void should_allow_to_verify_a_collection_against_presence_of_multiple_runners() throws Exception {
 
-        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), hasRunnerForTest(SecondTest.class));
-        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), allOf(hasRunnerForTest(FirstTest.class), hasRunnerForTest(SecondTest.class)));
+        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), hasRunnerForTest(SecondTestClass.class));
+        assertThat(Arrays.asList(firstTestRunner, secondTestRunner), allOf(hasRunnerForTest(FirstTestClass.class), hasRunnerForTest(SecondTestClass.class)));
     }
 }

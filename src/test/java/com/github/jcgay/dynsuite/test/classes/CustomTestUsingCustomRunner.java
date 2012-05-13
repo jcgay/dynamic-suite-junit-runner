@@ -1,4 +1,4 @@
-package com.github.jcgay.dynsuite.fakeTestClasses;
+package com.github.jcgay.dynsuite.test.classes;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

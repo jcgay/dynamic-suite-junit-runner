@@ -1,6 +1,6 @@
 package com.github.jcgay.dynsuite.example;
 
-import com.github.jcgay.dynsuite.fakeTestClasses.FirstTest;
+import com.github.jcgay.dynsuite.test.classes.FirstTestClass;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
@@ -28,7 +28,7 @@ public class DiscoverRunnerImplementationTest {
 
         public TestRunner(Class<? extends TestRunner> clazz) throws InitializationError{
             super(clazz);
-            runners.add(new BlockJUnit4ClassRunner(FirstTest.class));
+            runners.add(new BlockJUnit4ClassRunner(FirstTestClass.class));
         }
 
         @Override

@@ -1,4 +1,4 @@
-package com.github.jcgay.dynsuite.fakeTestClasses;
+package com.github.jcgay.dynsuite.test.classes;
 
 import com.github.jcgay.dynsuite.exception.TechnicalException;
 import org.junit.runner.Description;
