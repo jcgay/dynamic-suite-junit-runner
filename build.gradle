@@ -8,10 +8,6 @@ version = '0.4-SNAPSHOT'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-project.ext {
-    releaseOrSnapshot = version.contains('SNAPSHOT') ? 'snapshot' : 'release'
-}
-
 configurations {
     deployerJars
 }
@@ -24,7 +20,7 @@ dependencies {
     compile group: 'junit', name: 'junit', version: '4.10'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.6.4'
     testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.0'
-    deployerJars group: 'org.apache.maven.wagon', name: 'wagon-webdav-jackrabbit', version: '1.0-beta-6'
+    deployerJars group: 'org.apache.maven.wagon', name: 'wagon-webdav', version: '1.0-beta-2'
 }
 
 test {
@@ -50,7 +46,10 @@ uploadArchives {
     repositories.mavenDeployer {
         name = 'cloudbees'
         configuration = configurations.deployerJars
-        repository(url: "dav:https://repository-jcgay.forge.cloudbees.com/${project.releaseOrSnapshot}/") {
+        snapshotRepository(url: "dav:https://repository-jcgay.forge.cloudbees.com/snapshot/") {
+            authentication(userName: cloudbeesRepoUser, password: cloudbeesRepoPassword)
+        }
+        repository(url: "dav:https://repository-jcgay.forge.cloudbees.com/release/") {
             authentication(userName: cloudbeesRepoUser, password: cloudbeesRepoPassword)
         }
     }
