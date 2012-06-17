@@ -8,6 +8,10 @@ version = '0.4-SNAPSHOT'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+project.ext {
+    releaseOrSnapshot = version.contains('SNAPSHOT') ? 'snapshot' : 'release'
+}
+
 configurations {
     deployerJars
 }
@@ -46,8 +50,7 @@ uploadArchives {
     repositories.mavenDeployer {
         name = 'cloudbees'
         configuration = configurations.deployerJars
-        releaseOrSnapshot = version.contains('SNAPSHOT') ? 'snapshot' : 'release'
-        repository(url: "dav:https://repository-jcgay.forge.cloudbees.com/${releaseOrSnapshot}/") {
+        repository(url: "dav:https://repository-jcgay.forge.cloudbees.com/${project.releaseOrSnapshot}/") {
             authentication(userName: cloudbeesRepoUser, password: cloudbeesRepoPassword)
         }
     }
